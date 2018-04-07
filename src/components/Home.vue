@@ -43,6 +43,11 @@
       <el-menu-item index="3" disabled>消息中心</el-menu-item>
       <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
     </el-menu>
+    <el-cascader
+      :options="options2"
+      @active-item-change="handleItemChange"
+      :props="props"
+    ></el-cascader>
   </div>
 </template>
 
@@ -51,12 +56,37 @@
     data() {
       return {
         activeIndex: '1',
-        activeIndex2: '1'
+        activeIndex2: '1',
+        options2: [{
+           label: '江苏',
+           cities: []
+         }, {
+           label: '浙江',
+           cities: []
+         }],
+         props: {
+           value: 'label',
+           children: 'cities'
+         }
       };
     },
     methods: {
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
+      },
+      handleItemChange(val) {
+        console.log('active item:', val);
+        setTimeout(_ => {
+          if (val.indexOf('江苏') > -1 && !this.options2[0].cities.length) {
+            this.options2[0].cities = [{
+              label: '南京'
+            }];
+          } else if (val.indexOf('浙江') > -1 && !this.options2[1].cities.length) {
+            this.options2[1].cities = [{
+              label: '杭州'
+            }];
+          }
+        }, 300);
       }
     }
   }
